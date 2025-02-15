@@ -34,6 +34,7 @@ export default function Home() {
       const data = await usersHttp.setUser(newUser);
 
       setUsers([...users, data]);
+      setInput("");
     }
   };
 
