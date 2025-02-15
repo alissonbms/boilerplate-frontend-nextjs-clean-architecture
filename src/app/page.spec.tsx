@@ -7,8 +7,12 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { useAppStore } from "./store";
+import { container, Registry } from "@/infra/ContainerRegistry";
+import UsersInMemoryGateway from "@/gateways/Users/UsersInMemoryGateway";
 describe("Test Home page", () => {
   beforeEach(() => {
+    container.rebind(Registry.UsersHttpGateway).to(UsersInMemoryGateway);
+
     const { result } = renderHook(() => useAppStore());
 
     waitFor(() => {

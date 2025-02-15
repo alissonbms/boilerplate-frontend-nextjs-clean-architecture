@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import User from "@/entities/User";
 import IUsersGateway from "./IUsersGateway";
+import { injectable } from "inversify";
 
+injectable();
 export default class UsersInMemoryGateway implements IUsersGateway {
   protected users: User[];
 
