@@ -19,7 +19,7 @@ export default class UsersInMemoryGateway implements IUsersGateway {
       id: this.users.length ? this.users[this.users.length - 1].id + 1 : 1,
       name: user.name,
       username: `${user.name}-username`,
-      email: `${user.name}-email`,
+      email: `${user.name}-@email.com`,
     };
 
     this.users.push(newUser);

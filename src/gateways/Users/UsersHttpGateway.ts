@@ -26,7 +26,7 @@ export default class UsersHttpGateway implements IUsersGateway {
     const newUser = {
       name: user.name,
       username: `${user.name}-username`,
-      email: `${user.name}-email`,
+      email: `${user.name}-@email.com`,
     };
 
     const data = await this.httpClient.post(`${this.baseUrl}/users`, newUser);
