@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "./styles/page.module.scss";
 import { useAppStore } from "./store";
 
@@ -8,19 +8,37 @@ export default function Home() {
   const [input, setInput] = useState("");
   const { users, setUsers } = useAppStore();
 
-  function handleAddUser(e: FormEvent<HTMLFormElement>) {
+  const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (/^\s/.test(input)) {
       alert("Empty field");
     } else {
       const newUser = {
-        id: Math.floor(Math.random() * 10000),
         name: input,
+        username: `${input}-username`,
+        email: `${input}@email.com`,
       };
-      setUsers([...users, newUser]);
+
+      const response = await fetch("http://localhost:3335/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+
+      const data = await response.json();
+      setUsers([...users, data]);
     }
-  }
+  };
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("http://localhost:3335/users");
+      const data = await response.json();
+
+      setUsers([...users, data]);
+    })();
+  }, []);
 
   return (
     <div
@@ -45,7 +63,7 @@ export default function Home() {
       </form>
       <ul style={{ paddingLeft: "20px" }}>
         {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
+          <li key={user.name}>{user.name}</li>
         ))}
       </ul>
     </div>
