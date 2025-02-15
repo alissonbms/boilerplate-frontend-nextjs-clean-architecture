@@ -12,9 +12,11 @@
     "dev:api": "json-server --watch db.json --port 3335"
   },
   "dependencies": {
+    "inversify": "^6.2.2",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "reflect-metadata": "^0.2.2",
     "sass": "^1.84.0",
     "zustand": "^5.0.3"
   },

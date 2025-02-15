@@ -1,40 +1,47 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "./styles/page.module.scss";
 import { useAppStore } from "./store";
+import UsersHttpGateway from "@/gateways/Users/UsersHttpGateway";
+import { container, Registry } from "@/infra/ContainerRegistry";
 
 export default function Home() {
+  const rendering = useRef(0);
+  const [usersHttp, setUsersHttp] = useState<UsersHttpGateway>();
   const [input, setInput] = useState("");
   const { users, setUsers } = useAppStore();
 
+  useEffect(() => {
+    if (rendering.current === 1) return;
+
+    setUsersHttp(container.get<UsersHttpGateway>(Registry.UsersHttpGateway));
+
+    rendering.current = 1;
+  }, [usersHttp]);
+
   const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!usersHttp) return;
 
     if (/^\s/.test(input)) {
       alert("Empty field");
     } else {
       const newUser = {
         name: input,
-        username: `${input}-username`,
-        email: `${input}@email.com`,
       };
 
-      const response = await fetch("http://localhost:3335/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
-      });
+      const data = await usersHttp.setUser(newUser);
 
-      const data = await response.json();
       setUsers([...users, data]);
     }
   };
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:3335/users");
-      const data = await response.json();
+      if (!usersHttp) return;
+
+      const data = await usersHttp.getUsers();
 
       setUsers([...users, data]);
     })();
