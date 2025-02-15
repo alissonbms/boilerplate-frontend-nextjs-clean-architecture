@@ -18,7 +18,7 @@ export default function Home() {
     setUsersHttp(container.get<UsersHttpGateway>(Registry.UsersHttpGateway));
 
     rendering.current = 1;
-  }, [usersHttp]);
+  }, []);
 
   const handleAddUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,9 +44,9 @@ export default function Home() {
 
       const data = await usersHttp.getUsers();
 
-      setUsers([...users, data]);
+      setUsers([...users, ...data]);
     })();
-  }, []);
+  }, [usersHttp]);
 
   return (
     <div
