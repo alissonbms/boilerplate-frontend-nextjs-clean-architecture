@@ -53,12 +53,15 @@ describe("Test Home page", () => {
     waitFor(() => {
       result.current.setUsers([
         {
+          id: 1,
           name: "Mike",
         },
         {
+          id: 2,
           name: "Chloe",
         },
         {
+          id: 3,
           name: "Ashley",
         },
       ]);
