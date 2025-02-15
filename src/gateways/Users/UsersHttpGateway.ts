@@ -1,19 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import User from "@/entities/User";
 import IUsersGateway from "./IUsersGateway";
+import IHttpClient from "@/infra/IHttpClient";
 
 export default class UsersHttpGateway implements IUsersGateway {
   protected users: User[];
 
-  constructor() {
+  constructor(readonly httpClient: IHttpClient, readonly baseUrl: string) {
     this.users = [];
   }
   async getUsers(): Promise<User[]> {
-    const response = await fetch("http://localhost:3335/users");
+    const data = await this.httpClient.get(`${this.baseUrl}/users`);
 
-    const data = await response.json();
+    const items: User[] = [];
 
-    return data;
+    for (const user of data) {
+      items.push(new User(user.id, user.name, user.username, user.email));
+    }
+
+    this.users = items;
+
+    return items;
   }
   async setUser(user: any): Promise<User> {
     const newUser = {
@@ -21,13 +28,8 @@ export default class UsersHttpGateway implements IUsersGateway {
       username: `${user.name}-username`,
       email: `${user.name}-email`,
     };
-    const response = await fetch("http://localhost:3335/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newUser),
-    });
 
-    const data = await response.json();
+    const data = await this.httpClient.post(`${this.baseUrl}/users`, newUser);
 
     this.users.push(data);
 

@@ -12,6 +12,7 @@
     "dev:api": "json-server --watch db.json --port 3335"
   },
   "dependencies": {
+    "axios": "^1.7.9",
     "inversify": "^6.2.2",
     "next": "15.1.7",
     "react": "^19.0.0",
