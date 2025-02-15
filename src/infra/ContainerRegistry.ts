@@ -1,12 +1,13 @@
+import "reflect-metadata";
 import UsersHttpGateway from "@/gateways/Users/UsersHttpGateway";
 import { Container } from "inversify";
 import FetchAdapter from "./adapters/FetchAdapter";
 import AxiosAdapter from "./adapters/AxiosAdapter";
 
 export const Registry = {
-  UsersHttpGateway: Symbol.for("UsersHttpGateway"),
   FetchAdapter: Symbol.for("FetchAdapter"),
   AxiosAdapter: Symbol.for("AxiosAdapter"),
+  UsersHttpGateway: Symbol.for("UsersHttpGateway"),
 };
 
 export const container = new Container();
