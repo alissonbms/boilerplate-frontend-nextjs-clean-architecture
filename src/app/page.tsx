@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "./styles/page.module.scss";
-import { useAppStore } from "./store";
+import { useAppStore } from "../store";
 import UsersHttpGateway from "@/gateways/Users/UsersHttpGateway";
 import { container, Registry } from "@/infra/ContainerRegistry";
 
